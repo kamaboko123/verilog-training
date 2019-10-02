@@ -33,6 +33,9 @@ initial begin
     #10 signal <= 1;
     #10 signal <= 0;
     
+    #10 signal <= 1;
+    #1 signal <= 0;
+    
     #50 $finish;
 end
 
