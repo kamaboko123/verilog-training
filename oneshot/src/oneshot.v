@@ -11,13 +11,19 @@ always @(posedge in) begin
     state <= 1;
 end
 
+always @(negedge reset_n) begin
+    enable <= 1'b0;
+    state <= 0;
+    cnt <= 0;
+end
+
 always @(posedge clk) begin
-    if(!reset_n) begin
+    /*if(!reset_n) begin
         enable <= 1'b0;
         state <= 0;
         cnt <= 0;
-    end
-    else begin
+    end*/
+    //else begin
         if(cnt == 2'b11) begin
             enable <= 0;
             state <= 0;
@@ -29,7 +35,7 @@ always @(posedge clk) begin
                 cnt = cnt + 1;
             end
         end
-    end
+    //end
 end
 
 endmodule
