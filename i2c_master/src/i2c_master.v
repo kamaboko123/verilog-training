@@ -49,14 +49,16 @@ always @(posedge clk or negedge reset_n) begin
         error <= 0;
     end
     
-    if(enable && (_state == STATE_READY)) begin
-        _enable <= 1;
-        _mode <= mode;
-        _slave_addr <= (slave_addr << 1) + mode;
-        _data = data;
-        _state <= STATE_START;
-        _stop <= stop;
-        error <= 0;
+    if(enable) begin
+        if(_state == STATE_READY) begin
+            _enable <= 1;
+            _mode <= mode;
+            _slave_addr <= (slave_addr << 1) + mode;
+            _data = data;
+            _state <= STATE_START;
+            _stop <= stop;
+            error <= 0;
+        end
     end
     else if(_enable) begin
         if(_state == STATE_START) begin
