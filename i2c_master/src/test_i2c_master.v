@@ -41,7 +41,7 @@ initial begin
     
     #800 _sda <= 0;
     #30 _sda <= 1'bz;
-    #700 _sda <= 0;
+    #720 _sda <= 0;
     #30 _sda <= 1'bz;
     
     #2000 $finish;

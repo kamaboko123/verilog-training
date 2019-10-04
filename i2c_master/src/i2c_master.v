@@ -117,14 +117,20 @@ always @(posedge clk or negedge reset_n or posedge enable) begin
                             _step <= 2;
                         end
                         2:begin
-                            _step <= 0;
                             if(sda == 0) begin
-                                _step <= 0;
-                                _state <= _state_next;
+                                _step <= 3;
                             end
                             else begin
                                 _state <= STATE_ERROR;
                             end
+                        end
+                        3:begin
+                            _scl <= 1;
+                            _step <= 4;
+                        end
+                        4:begin
+                            _state <= _state_next;
+                            _step <= 0;
                         end
                     endcase
                 end
