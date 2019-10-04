@@ -26,8 +26,8 @@ reg [3:0] _step;
 reg [2:0] _cnt;
 reg _stop;
 
-parameter MODE_WRITE = 1;
-parameter MODE_READ = 0;
+parameter MODE_WRITE = 0;
+parameter MODE_READ = 1;
 parameter STATE_READY = 0;
 parameter STATE_START = 1;
 parameter STATE_SEND_ADDR = 2;

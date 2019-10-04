@@ -27,7 +27,7 @@ initial begin
         clk <= 0;
         signal <= 0;
         reset_n <= 1;
-        i2c_mode <= 1;
+        i2c_mode <= 0;
         i2c_slave_addr <= 7'h77;
         i2c_data <= 8'hda;
         _sda <= 1'bz;
