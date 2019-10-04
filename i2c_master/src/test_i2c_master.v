@@ -39,7 +39,7 @@ initial begin
     #5 signal <= 1;
     #1 signal <= 0;
     
-    #750 _sda <= 0;
+    #800 _sda <= 0;
     #30 _sda <= 1'bz;
     #700 _sda <= 0;
     #30 _sda <= 1'bz;

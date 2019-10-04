@@ -7,15 +7,17 @@ module ONESHOT(
 reg [1:0] cnt;
 reg state;
 
-always @(posedge clk, negedge reset_n) begin
+always @(posedge clk, negedge reset_n, posedge in) begin
     if(!reset_n) begin
         enable <= 1'b0;
         state <= 0;
         cnt <= 0;
     end
+    
     if(in) begin
         state <= 1;
     end
+    
     if(cnt == 2'b11) begin
         enable <= 0;
         state <= 0;

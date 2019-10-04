@@ -37,7 +37,7 @@ parameter STATE_STOP = 5;
 parameter STATE_NONE = 6;
 parameter STATE_ERROR = 7;
 
-always @(posedge clk or negedge reset_n) begin
+always @(posedge clk or negedge reset_n or posedge enable) begin
     
     if(!reset_n) begin
         _state <= STATE_READY;
@@ -50,7 +50,7 @@ always @(posedge clk or negedge reset_n) begin
     end
     
     if(enable) begin
-        if(_state == STATE_READY) begin
+        if(_state == STATE_READY)begin
             _enable <= 1;
             _mode <= mode;
             _slave_addr <= (slave_addr << 1) + mode;
