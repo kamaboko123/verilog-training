@@ -37,17 +37,18 @@ parameter STATE_STOP = 5;
 parameter STATE_NONE = 6;
 parameter STATE_ERROR = 7;
 
-always @(negedge reset_n) begin
-    _state <= STATE_READY;
-    _scl <= 1;
-    _sda <= 1;
-    _step <= 0;
-    _mode <= 1'bx;
-    _enable <= 0;
-    error <= 0;
-end
-
-always @(posedge clk) begin
+always @(posedge clk or negedge reset_n) begin
+    
+    if(!reset_n) begin
+        _state <= STATE_READY;
+        _scl <= 1;
+        _sda <= 1;
+        _step <= 0;
+        _mode <= 1'bx;
+        _enable <= 0;
+        error <= 0;
+    end
+    
     if(enable && (_state == STATE_READY)) begin
         _enable <= 1;
         _mode <= mode;
