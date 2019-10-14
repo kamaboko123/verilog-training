@@ -39,10 +39,23 @@ initial begin
     #5 signal <= 1;
     #1 signal <= 0;
     
-    #800 _sda <= 0;
-    #30 _sda <= 1'bz;
-    #720 _sda <= 0;
-    #30 _sda <= 1'bz;
+    #770 _sda <= 0;
+    #60 _sda <= 1'bz;
+    #700 _sda <= 0;
+    #60 _sda <= 1'bz;
+    
+    #200
+        i2c_mode <= 1;
+    #200;
+    
+    #5 signal <= 1;
+    #1 signal <= 0;
+    
+    #774 _sda <= 0;
+    #60 _sda <= 1'bz;
+    #80 _sda <= 1;
+    
+    #620 _sda <= 1'bz;
     
     #2000 $finish;
 end

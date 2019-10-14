@@ -4,6 +4,7 @@ module I2C_MASTER(
     input mode,
     input [6:0] slave_addr,
     input [7:0] data,
+    output reg [7:0] recv_buf,
     input stop,
     output scl,
     inout sda,
@@ -18,7 +19,7 @@ assign scl = _scl;
 assign sda = _sda;
 assign busy = ~(_state == 3'd0);
 
-reg [2:0] _state;
+reg [3:0] _state;
 reg [2:0] _state_next;
 reg [7:0] _slave_addr;
 reg [7:0] _data;
@@ -33,9 +34,11 @@ parameter STATE_START = 1;
 parameter STATE_SEND_ADDR = 2;
 parameter STATE_CHECK_ACK = 3;
 parameter STATE_SEND_DATA = 4;
-parameter STATE_STOP = 5;
-parameter STATE_NONE = 6;
-parameter STATE_ERROR = 7;
+parameter STATE_RECV_DATA = 5;
+parameter STATE_SEND_NACK = 6;
+parameter STATE_STOP = 7;
+parameter STATE_NONE = 8;
+parameter STATE_ERROR = 9;
 
 always @(posedge clk or negedge reset_n or posedge enable) begin
     
@@ -47,6 +50,7 @@ always @(posedge clk or negedge reset_n or posedge enable) begin
         _mode <= 1'bx;
         _enable <= 0;
         error <= 0;
+        recv_buf <= 0;
     end
     else begin
         if(enable) begin
@@ -55,6 +59,7 @@ always @(posedge clk or negedge reset_n or posedge enable) begin
                 _mode <= mode;
                 _slave_addr <= (slave_addr << 1) + mode;
                 _data = data;
+                recv_buf <= 0;
                 _state <= STATE_START;
                 _stop <= stop;
                 error <= 0;
@@ -96,7 +101,7 @@ always @(posedge clk or negedge reset_n or posedge enable) begin
                                     _state_next <= STATE_SEND_DATA;
                                 end
                                 else begin
-                                    //_state_next <= STATE_RECV_DATA;
+                                    _state_next <= STATE_RECV_DATA;
                                 end
                             end
                             else begin
@@ -164,6 +169,59 @@ always @(posedge clk or negedge reset_n or posedge enable) begin
                             else begin
                                 _step <= 1;
                             end
+                        end
+                    endcase
+                end
+                
+                if(_state == STATE_RECV_DATA) begin
+                    case (_step)
+                        0:begin
+                            _cnt <= 3'd7;
+                            _step <= 1;
+                        end
+                        1:begin
+                            _scl <= 0;
+                            _step <= 2;
+                        end
+                        2:begin
+                            _step <= 3;
+                            recv_buf <= (recv_buf << 1) + sda;
+                        end
+                        3:begin
+                            _scl <= 1;
+                            _step <= 4;
+                        end
+                        4:begin
+                            _cnt <= _cnt - 1;
+                            if(_cnt == 0) begin
+                                _step <= 0;
+                                _state <= STATE_SEND_NACK;
+                                _state_next <= STATE_STOP;
+                            end
+                            else begin
+                                _step <= 1;
+                            end
+                        end
+                    endcase
+                end
+                
+                if(_state == STATE_SEND_NACK) begin
+                    case(_step)
+                        0:begin
+                            _scl <= 0;
+                            _step <= 1;
+                        end
+                        1:begin
+                            _sda <= 1;
+                            _step <= 2;
+                        end
+                        2:begin
+                            _scl <= 1;
+                            _step <= 3;
+                        end
+                        3:begin
+                            _step <= 0;
+                            _state <= _state_next;
                         end
                     endcase
                 end
