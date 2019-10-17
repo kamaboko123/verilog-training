@@ -9,6 +9,7 @@ module I2C_MASTER(
     output scl,
     inout sda,
     output busy,
+    output reg done,
     output reg error
 );
 
@@ -17,7 +18,7 @@ reg _scl, _sda;
 reg _mode;
 assign scl = _scl;
 assign sda = _sda;
-assign busy = ~(_state == 3'd0);
+assign busy = ~((_state == STATE_READY) | (_state == STATE_DONE));
 
 reg [3:0] _state;
 reg [2:0] _state_next;
@@ -39,6 +40,7 @@ parameter STATE_SEND_NACK = 6;
 parameter STATE_STOP = 7;
 parameter STATE_NONE = 8;
 parameter STATE_ERROR = 9;
+parameter STATE_DONE = 10;
 
 always @(posedge clk or negedge reset_n or posedge enable) begin
     
@@ -51,6 +53,7 @@ always @(posedge clk or negedge reset_n or posedge enable) begin
         _enable <= 0;
         error <= 0;
         recv_buf <= 0;
+        done <= 0;
     end
     else begin
         if(enable) begin
@@ -63,6 +66,7 @@ always @(posedge clk or negedge reset_n or posedge enable) begin
                 _state <= STATE_START;
                 _stop <= stop;
                 error <= 0;
+                done <= 0;
             end
         end
         else begin
@@ -245,6 +249,17 @@ always @(posedge clk or negedge reset_n or posedge enable) begin
                             _step <= 4;
                         end
                         4:begin
+                            _step <= 0;
+                            done <= 1;
+                            _state <= STATE_DONE;
+                        end
+                    endcase
+                end
+                
+                if(_state == STATE_DONE) begin
+                    case(_step)
+                        0:begin
+                            done <= 0;
                             _state <= STATE_READY;
                         end
                     endcase
