@@ -6,16 +6,13 @@ parameter CLK = 10;
 
 reg clk;
 reg reset_n;
-reg signal;
-wire enable;
 
-reg i2c_mode;
-reg [6:0] i2c_slave_addr;
-reg [7:0] i2c_data;
-
+wire scl;
 wire sda;
 reg _sda;
 assign sda = _sda;
+reg [2:0] scl_cnt;
+reg enable;
 
 always begin
     #CLK clk <= ~clk;
@@ -23,59 +20,43 @@ end
 
 initial begin
     $dumpvars(0, TEST_I2C_MASTER);
-    #(CLK + 1)
+    #0
         clk <= 0;
-        signal <= 0;
         reset_n <= 1;
-        i2c_mode <= 0;
-        i2c_slave_addr <= 7'h77;
-        i2c_data <= 8'hda;
+        enable <= 0;
+    #0;
+    
+    #(CLK + 1)
         _sda <= 1'bz;
     #(CLK + 1);
     
     #1 reset_n <= 0;
     #1 reset_n <= 1;
+    #1 enable <= 1;
+    #1 enable <= 1;
     
-    #5 signal <= 1;
-    #1 signal <= 0;
-    
-    #770 _sda <= 0;
+    #744 _sda <= 0;
     #60 _sda <= 1'bz;
     #700 _sda <= 0;
     #60 _sda <= 1'bz;
     
-    #200
-        i2c_mode <= 1;
-    #200;
-    
-    #5 signal <= 1;
-    #1 signal <= 0;
-    
-    #774 _sda <= 0;
+    #880 _sda <= 0;
     #60 _sda <= 1'bz;
     #80 _sda <= 1;
     
-    #620 _sda <= 1'bz;
+    #580 _sda <= 1'bz;
     
-    #2000 $finish;
+    #1000 $finish;
 end
 
-
-ONESHOT o(
+I2C_READ read(
     .clk(clk),
     .reset_n(reset_n),
-    .in(signal),
+    .sda(sda),
+    .scl(scl),
+    .slave_addr(7'h77),
+    .register_addr(8'hda),
     .enable(enable)
-);
-
-I2C_MASTER master(
-    .clk(clk),
-    .reset_n(reset_n),
-    .enable(enable),
-    .mode(i2c_mode),
-    .slave_addr(i2c_slave_addr),
-    .data(i2c_data),
-    .sda(sda)
 );
 
 
