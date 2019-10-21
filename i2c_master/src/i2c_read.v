@@ -46,7 +46,7 @@ I2C_MASTER master(
 
 assign busy = !((_state == STATE_READY) || (_state == STATE_FINISH));
 
-always @(posedge clk or reset_n) begin
+always @(posedge clk or negedge reset_n) begin
     if(!reset_n) begin
         _i2c_enable <= 0;
         _state <= STATE_SETUP;
