@@ -58,6 +58,10 @@ always @(posedge clk or negedge reset_n or posedge enable) begin
     else begin
         if(enable) begin
             if(_state == STATE_READY)begin
+                _scl <= 1;
+                _sda <= 1;
+                _step <= 0;
+                
                 _enable <= 1;
                 _mode <= mode;
                 _slave_addr <= (slave_addr << 1) + mode;

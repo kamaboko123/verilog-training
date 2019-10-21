@@ -35,7 +35,7 @@ initial begin
     #1 enable <= 1;
     #1 enable <= 1;
     
-    #744 _sda <= 0;
+    #764 _sda <= 0;
     #60 _sda <= 1'bz;
     #700 _sda <= 0;
     #60 _sda <= 1'bz;
