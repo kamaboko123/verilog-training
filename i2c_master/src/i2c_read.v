@@ -1,8 +1,8 @@
 module I2C_READ(
     input clk,
     input reset_n,
-    input [7:0] slave_addr,
-    input [6:0] register_addr,
+    input [6:0] slave_addr,
+    input [7:0] register_addr,
     inout sda,
     output scl,
     output busy,
