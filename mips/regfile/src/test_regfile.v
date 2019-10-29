@@ -32,7 +32,7 @@ initial begin
     #(CLK*2);
     #(CLK*2);
     
-    for(i = 0; i < 31; i = i + 1) begin
+    for(i = 0; i < 32; i = i + 1) begin
         sel <= i;
         data <= i*2;
         r0 <= i;

@@ -119,6 +119,7 @@ REGISTER_32 r27(reset_n, clk, _write_sel[27], w_data, _r27_data);
 REGISTER_32 r28(reset_n, clk, _write_sel[28], w_data, _r28_data);
 REGISTER_32 r29(reset_n, clk, _write_sel[29], w_data, _r29_data);
 REGISTER_32 r30(reset_n, clk, _write_sel[30], w_data, _r30_data);
+REGISTER_32 r31(reset_n, clk, _write_sel[31], w_data, _r31_data);
 
 function [31:0] mux_reg;
     input [4:0] sel;
