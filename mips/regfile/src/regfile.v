@@ -11,6 +11,9 @@ module REGFILE(
 );
 
 wire [31:0] _write_sel;
+
+wire [31:0] _r_data[31:0];
+
 wire [31:0] _r0_data;
 wire [31:0] _r1_data;
 wire [31:0] _r2_data;
@@ -43,6 +46,47 @@ wire [31:0] _r28_data;
 wire [31:0] _r29_data;
 wire [31:0] _r30_data;
 wire [31:0] _r31_data;
+wire [1023:0] regs;
+
+assign regs = {
+    _r31_data,
+    _r30_data,
+    _r29_data,
+    _r28_data,
+    _r27_data,
+    _r26_data,
+    _r25_data,
+    _r24_data,
+    _r23_data,
+    _r22_data,
+    _r21_data,
+    _r20_data,
+    _r19_data,
+    _r18_data,
+    _r17_data,
+    _r16_data,
+    _r15_data,
+    _r14_data,
+    _r13_data,
+    _r12_data,
+    _r11_data,
+    _r10_data,
+    _r9_data,
+    _r8_data,
+    _r7_data,
+    _r6_data,
+    _r5_data,
+    _r4_data,
+    _r3_data,
+    _r2_data,
+    _r1_data,
+    _r0_data
+};
+
+assign _write_sel = (32'b1 << w_reg0);
+assign reg0 = mux_reg(r_reg0, regs);
+assign reg1 = mux_reg(r_reg1, regs);
+
 
 REGISTER_32 r0(reset_n, clk, _write_sel[0], w_data, _r0_data);
 REGISTER_32 r1(reset_n, clk, _write_sel[1], w_data, _r1_data);
@@ -75,7 +119,48 @@ REGISTER_32 r27(reset_n, clk, _write_sel[27], w_data, _r27_data);
 REGISTER_32 r28(reset_n, clk, _write_sel[28], w_data, _r28_data);
 REGISTER_32 r29(reset_n, clk, _write_sel[29], w_data, _r29_data);
 REGISTER_32 r30(reset_n, clk, _write_sel[30], w_data, _r30_data);
-REGISTER_32 r31(reset_n, clk, _write_sel[31], w_data, _r31_data);
+
+function [31:0] mux_reg;
+    input [4:0] sel;
+    input [1023:0] regs;
+    
+    begin
+        case(sel)
+            0: mux_reg = regs[(32*1)-1:32*0];
+            1: mux_reg = regs[(32*2)-1:32*1];
+            2: mux_reg = regs[(32*3)-1:32*2];
+            3: mux_reg = regs[(32*4)-1:32*3];
+            4: mux_reg = regs[(32*5)-1:32*4];
+            5: mux_reg = regs[(32*6)-1:32*5];
+            6: mux_reg = regs[(32*7)-1:32*6];
+            7: mux_reg = regs[(32*8)-1:32*7];
+            8: mux_reg = regs[(32*9)-1:32*8];
+            9: mux_reg = regs[(32*10)-1:32*9];
+            10: mux_reg = regs[(32*11)-1:32*10];
+            11: mux_reg = regs[(32*12)-1:32*11];
+            12: mux_reg = regs[(32*13)-1:32*12];
+            13: mux_reg = regs[(32*14)-1:32*13];
+            14: mux_reg = regs[(32*15)-1:32*14];
+            15: mux_reg = regs[(32*16)-1:32*15];
+            16: mux_reg = regs[(32*17)-1:32*16];
+            17: mux_reg = regs[(32*18)-1:32*17];
+            18: mux_reg = regs[(32*19)-1:32*18];
+            19: mux_reg = regs[(32*20)-1:32*19];
+            20: mux_reg = regs[(32*21)-1:32*20];
+            21: mux_reg = regs[(32*22)-1:32*21];
+            22: mux_reg = regs[(32*23)-1:32*22];
+            23: mux_reg = regs[(32*24)-1:32*23];
+            24: mux_reg = regs[(32*25)-1:32*24];
+            25: mux_reg = regs[(32*26)-1:32*25];
+            26: mux_reg = regs[(32*27)-1:32*26];
+            27: mux_reg = regs[(32*28)-1:32*27];
+            28: mux_reg = regs[(32*29)-1:32*28];
+            29: mux_reg = regs[(32*30)-1:32*29];
+            30: mux_reg = regs[(32*31)-1:32*30];
+            31: mux_reg = regs[(32*32)-1:32*31];
+        endcase
+    end
+endfunction
 
 endmodule
 
