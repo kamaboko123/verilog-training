@@ -40,4 +40,9 @@ REGISTER_32 reg_test(
     .in_data(data)
 );
 
+REGFILE rf(
+    .clk(clk),
+    .reset_n(reset)
+);
+
 endmodule
