@@ -3,6 +3,7 @@
 module TEST_REGFILE();
 
 parameter CLK = 10;
+parameter DLY = (CLK*2);
 
 reg clk;
 reg reset;
@@ -12,10 +13,12 @@ reg [4:0] sel;
 reg [4:0] r0;
 reg [4:0] r1;
 
+reg start;
+
 integer i;
 
 always begin
-    #CLK clk <= ~clk;
+    #(CLK) clk <= ~clk;
 end
 
 initial begin
@@ -24,23 +27,28 @@ initial begin
     #0
         clk <= 0;
         reset <= 1;
+        start <= 0;
+        i <= 0;
     #0;
     
-    #(CLK/2) reset <= 0;
-    
-    #CLK reset <= 1;
-    #(CLK*2);
-    #(CLK*2);
-    
-    for(i = 0; i < 32; i = i + 1) begin
-        sel <= i;
-        data <= i*2;
-        r0 <= i;
-        r1 <= i;
-        #(CLK*2);
-    end
+    #(DLY) reset <= 0;
+    #(DLY)
+        start <= 1;
+        reset <= 1;
+    #(DLY);
     
     #1000 $finish;
+end
+
+always @(negedge clk) begin
+    if(start) begin
+        sel <= i;
+        data <= i << 2;
+        
+        #DLY;
+        if(i == 0)
+        i = i + 1;
+    end
 end
 
 REGFILE rf(
