@@ -5,6 +5,7 @@ module MIPS(
 
 parameter ALU_CODE_ADD = 3'b010;
 
+wire [2:0] alu_code;
 wire [31:0] alu_result;
 
 wire [4:0] reg_read_sel0;
@@ -31,7 +32,6 @@ wire reg_write;
 wire reg_dst;
 wire alu_src;
 wire pc_src;
-wire [2:0] alu_code;
 wire [1:0] alu_op;
 wire mem_read;
 wire mem_write;
@@ -39,6 +39,19 @@ wire mem_to_reg;
 
 //decoder flag(in)
 wire alu_zero;
+
+DECODER dec(
+    .ins_op(ins_data[31:26]),
+    .reg_write(reg_write),
+    .reg_dst(reg_dst),
+    .alu_src(alu_src),
+    .pc_src(pc_src),
+    .alu_code(alu_code),
+    .alu_op(alu_op),
+    .mem_read(mem_read),
+    .mem_write(mem_write),
+    .mem_to_reg(mem_to_reg)
+);
 
 DATAMEM datamem(
     .reset_n(reset_n),
