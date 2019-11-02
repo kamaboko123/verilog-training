@@ -4,7 +4,6 @@ module DECODER(
     output reg_dst,
     output alu_src,
     output pc_src,
-    output [2:0] alu_code,
     output [1:0] alu_op,
     output mem_read,
     output mem_write,

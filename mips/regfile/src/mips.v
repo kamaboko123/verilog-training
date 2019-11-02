@@ -46,7 +46,6 @@ DECODER dec(
     .reg_dst(reg_dst),
     .alu_src(alu_src),
     .pc_src(pc_src),
-    .alu_code(alu_code),
     .alu_op(alu_op),
     .mem_read(mem_read),
     .mem_write(mem_write),
