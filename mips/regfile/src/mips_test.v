@@ -20,9 +20,9 @@ initial begin
     
     #(CLK * 2);
     #1 reset_n <= 0;
-    #1 reset_n <= 1;
+    #(CLK * 2) reset_n <= 1;
     
-    #10 $finish;
+    #150 $finish;
 end
 
 MIPS mips(

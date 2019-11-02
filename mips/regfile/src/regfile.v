@@ -96,7 +96,7 @@ REGISTER_32 r4(reset_n, clk, _write_sel[4], w_data, _r4_data); //a0
 REGISTER_32 r5(reset_n, clk, _write_sel[5], w_data, _r5_data); //a1
 REGISTER_32 r6(reset_n, clk, _write_sel[6], w_data, _r6_data); //a2
 REGISTER_32 r7(reset_n, clk, _write_sel[7], w_data, _r7_data); //a3
-REGISTER_32 r8(reset_n, clk, _write_sel[8], w_data, _r8_data); //a0
+REGISTER_32 r8(reset_n, clk, _write_sel[8], w_data, _r8_data); //t0
 REGISTER_32 r9(reset_n, clk, _write_sel[9], w_data, _r9_data); //t1
 REGISTER_32 r10(reset_n, clk, _write_sel[10], w_data, _r10_data); //t2
 REGISTER_32 r11(reset_n, clk, _write_sel[11], w_data, _r11_data); //t3

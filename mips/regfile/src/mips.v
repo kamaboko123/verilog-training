@@ -31,11 +31,11 @@ wire [31:0] mem_data;
 wire reg_write;
 wire reg_dst;
 wire alu_src;
-wire pc_src;
 wire [1:0] alu_op;
 wire mem_read;
 wire mem_write;
 wire mem_to_reg;
+wire branch;
 
 //decoder flag(in)
 wire alu_zero;
@@ -45,11 +45,11 @@ DECODER dec(
     .reg_write(reg_write),
     .reg_dst(reg_dst),
     .alu_src(alu_src),
-    .pc_src(pc_src),
     .alu_op(alu_op),
     .mem_read(mem_read),
     .mem_write(mem_write),
-    .mem_to_reg(mem_to_reg)
+    .mem_to_reg(mem_to_reg),
+    .branch(branch)
 );
 
 DATAMEM datamem(
@@ -62,7 +62,7 @@ DATAMEM datamem(
     .data(mem_data)
 );
 
-assign reg_write_data0 = (mem_to_reg == 0) ? (mem_data) : (alu_result);
+assign reg_write_data0 = (mem_to_reg == 0) ? (alu_result) : (mem_data);
 
 INSMEM insmem(
     .reset_n(reset_n),
@@ -105,7 +105,7 @@ ALU alu(
 );
 
 REGISTER_32 pc(
-    .reset_n(reser_n),
+    .reset_n(reset_n),
     .clk(clk),
     .write(1'b1),
     .in_data(jmp_to),
@@ -126,6 +126,8 @@ ALU pc_jmp(
     .x(pc_jmp_candidate1)
 );
 
+wire pc_src;
+assign pc_src = (branch & alu_zero);
 assign jmp_to = (pc_src == 0) ? (pc_jmp_candidate0) : (pc_jmp_candidate1);
 
 endmodule
