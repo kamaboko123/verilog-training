@@ -6,31 +6,31 @@ module ALU(
     output reg zero //flg for conditional branch
 );
 
-parameter OP_AND = 3'b000;
-parameter OP_OR = 3'b001;
-parameter OP_ADD = 3'b010;
-parameter OP_SUB = 3'b110;
-parameter OP_SLT = 3'b111;
+parameter ALU_CODE_AND = 3'b000;
+parameter ALU_CODE_OR = 3'b001;
+parameter ALU_CODE_ADD = 3'b010;
+parameter ALU_CODE_SUB = 3'b110;
+parameter ALU_CODE_SLT = 3'b111;
 
 always @* begin
     case(op)
-        OP_AND: begin
+        ALU_CODE_AND: begin
             x = a & b;
             zero = 1'bx;
         end
-        OP_OR: begin
+        ALU_CODE_OR: begin
             x = a | b;
             zero = 1'bx;
         end
-        OP_ADD: begin
+        ALU_CODE_ADD: begin
             x = a + b;
             zero = 1'bx;
         end
-        OP_SUB: begin
+        ALU_CODE_SUB: begin
             x = a - b;
             zero = (a == b);
         end
-        OP_SLT: begin
+        ALU_CODE_SLT: begin
             zero = 1'bx;
             if(a < b) begin
                 x = 31'b1;
