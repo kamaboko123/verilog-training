@@ -62,7 +62,7 @@ DATAMEM datamem(
     .data(mem_data)
 );
 
-assign reg_write_data = (mem_to_reg == 0) ? (mem_data) : (alu_result);
+assign reg_write_data0 = (mem_to_reg == 0) ? (mem_data) : (alu_result);
 
 INSMEM insmem(
     .reset_n(reset_n),
