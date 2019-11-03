@@ -1,4 +1,5 @@
 *.swp
 *.vcd
 bin/
+a.out
 

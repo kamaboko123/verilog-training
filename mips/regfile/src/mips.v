@@ -21,9 +21,10 @@ wire [31:0] ins_imm;
 wire [31:0] alu_in_b;
 
 wire [31:0] pc_data;
+wire [31:0] pc_next;
 wire [31:0] jmp_to;
-wire [31:0] pc_jmp_candidate0;
-wire [31:0] pc_jmp_candidate1;
+wire [31:0] pc_branch_candidate0;
+wire [31:0] pc_branch_candidate1;
 
 wire [31:0] mem_data;
 
@@ -36,6 +37,7 @@ wire mem_read;
 wire mem_write;
 wire mem_to_reg;
 wire branch;
+wire jmp;
 
 //decoder flag(in)
 wire alu_zero;
@@ -49,7 +51,8 @@ DECODER dec(
     .mem_read(mem_read),
     .mem_write(mem_write),
     .mem_to_reg(mem_to_reg),
-    .branch(branch)
+    .branch(branch),
+    .jmp(jmp)
 );
 
 DATAMEM datamem(
@@ -108,7 +111,7 @@ REGISTER_32 pc(
     .reset_n(reset_n),
     .clk(clk),
     .write(1'b1),
-    .in_data(jmp_to),
+    .in_data(pc_next),
     .data(pc_data)
 );
 
@@ -116,18 +119,21 @@ ALU pc_inc(
     .op(ALU_CODE_ADD),
     .a(pc_data),
     .b(32'h4),
-    .x(pc_jmp_candidate0)
+    .x(pc_branch_candidate0)
 );
 
-ALU pc_jmp(
+ALU pc_branch(
     .op(ALU_CODE_ADD),
-    .a(pc_jmp_candidate0),
-    .b({ins_imm[31:2], 2'b00}),
-    .x(pc_jmp_candidate1)
+    .a(pc_branch_candidate0),
+    .b({ins_imm[29:0], 2'b00}),
+    .x(pc_branch_candidate1)
 );
 
 wire pc_src;
+wire [31:0] branch_to;
 assign pc_src = (branch & alu_zero);
-assign jmp_to = (pc_src == 0) ? (pc_jmp_candidate0) : (pc_jmp_candidate1);
+assign branch_to = (pc_src == 0) ? (pc_branch_candidate0) : (pc_branch_candidate1);
+assign jmp_to = {pc_branch_candidate0[31:28], {ins_imm[25:0], 2'b00}};
+assign pc_next = (jmp == 0) ? (branch_to) : (jmp_to);
 
 endmodule
