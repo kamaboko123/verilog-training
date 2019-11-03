@@ -8,6 +8,7 @@ start:
 
 a:
     addi $t2, $zero, 0x10
+    nop
     j end
 
 b:

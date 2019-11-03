@@ -88,7 +88,7 @@ assign reg0 = mux_reg(r_reg0, regs);
 assign reg1 = mux_reg(r_reg1, regs);
 
 
-REGISTER_32 r0(reset_n, clk, _write_sel[0], w_data, _r0_data); //zero
+REGISTER_32 r0(reset_n, clk, _write_sel[0], 32'h0, _r0_data); //zero
 REGISTER_32 r1(reset_n, clk, _write_sel[1], w_data, _r1_data); //at
 REGISTER_32 r2(reset_n, clk, _write_sel[2], w_data, _r2_data); //v0
 REGISTER_32 r3(reset_n, clk, _write_sel[3], w_data, _r3_data); //v1
