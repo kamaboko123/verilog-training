@@ -32,7 +32,7 @@ wire [31:0] mem_data;
 wire reg_write;
 wire reg_dst;
 wire alu_src;
-wire [1:0] alu_op;
+wire [2:0] alu_op;
 wire mem_read;
 wire mem_write;
 wire mem_to_reg;

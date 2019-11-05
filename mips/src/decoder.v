@@ -4,7 +4,7 @@ module DECODER(
     output reg reg_write,
     output reg reg_dst,
     output reg alu_src,
-    output reg [1:0] alu_op,
+    output reg [2:0] alu_op,
     output reg mem_read,
     output reg mem_write,
     output reg mem_to_reg,
@@ -27,7 +27,7 @@ always @* begin
                 mem_write = 1'b0;
                 branch = 1'b1;
                 jmp = 1'b1;
-                alu_op = 2'b01;
+                alu_op = 3'b001;
                 pc_to_reg = 1'b0;
                 pc_src_alu = 1'b1;
             end
@@ -40,7 +40,7 @@ always @* begin
                 mem_write = 1'b0;
                 branch = 1'b0;
                 jmp = 1'b0;
-                alu_op = 2'b10;
+                alu_op = 3'b010;
                 pc_to_reg = 1'b0;
                 pc_src_alu = 1'b0;
             end
@@ -54,7 +54,7 @@ always @* begin
             mem_write = 1'b0;
             branch = 1'b1;
             jmp = 1'b1;
-            alu_op = 2'b01;
+            alu_op = 3'b001;
             pc_to_reg = 1'b0;
             pc_src_alu = 1'b0;
         end
@@ -67,7 +67,7 @@ always @* begin
             mem_write = 1'b0;
             branch = 1'b1;
             jmp = 1'b1;
-            alu_op = 2'b01;
+            alu_op = 3'b001;
             pc_to_reg = 1'b1;
             pc_src_alu = 1'b0;
         end
@@ -80,7 +80,20 @@ always @* begin
             mem_write = 1'b0;
             branch = 1'b1;
             jmp = 1'b0;
-            alu_op = 2'b01;
+            alu_op = 3'b001;
+            pc_to_reg = 1'b0;
+            pc_src_alu = 1'b0;
+        end
+        5: begin //bne
+            reg_dst = 1'bx;
+            alu_src = 1'b0;
+            mem_to_reg = 1'bx;
+            reg_write = 1'b0;
+            mem_read = 1'b0;
+            mem_write = 1'b0;
+            branch = 1'b1;
+            jmp = 1'b0;
+            alu_op = 3'b100;
             pc_to_reg = 1'b0;
             pc_src_alu = 1'b0;
         end
@@ -93,7 +106,7 @@ always @* begin
             mem_write = 1'b0;
             branch = 1'b0;
             jmp = 1'b0;
-            alu_op = 2'b00;
+            alu_op = 3'b000;
             pc_to_reg = 1'b0;
             pc_src_alu = 1'b0;
         end
@@ -106,7 +119,20 @@ always @* begin
             mem_write = 1'b0;
             branch = 1'b0;
             jmp = 1'b0;
-            alu_op = 2'b00;
+            alu_op = 3'b000;
+            pc_to_reg = 1'b0;
+            pc_src_alu = 1'b0;
+        end
+        10:begin //slti
+            reg_dst = 1'b0;
+            alu_src = 1'b1;
+            mem_to_reg = 1'b0;
+            reg_write = 1'b1;
+            mem_read = 1'b0;
+            mem_write = 1'b0;
+            branch = 1'b0;
+            jmp = 1'b0;
+            alu_op = 3'b011;
             pc_to_reg = 1'b0;
             pc_src_alu = 1'b0;
         end
@@ -119,7 +145,7 @@ always @* begin
             mem_write = 1'b0;
             branch = 1'b0;
             jmp = 1'b0;
-            alu_op = 2'b00;
+            alu_op = 3'b000;
             pc_to_reg = 1'b0;
             pc_src_alu = 1'b0;
         end
@@ -132,7 +158,7 @@ always @* begin
             mem_write = 1'b1;
             branch = 1'b0;
             jmp = 1'b0;
-            alu_op = 2'b00;
+            alu_op = 3'b000;
             pc_to_reg = 1'b0;
             pc_src_alu = 1'b0;
         end
@@ -145,7 +171,7 @@ always @* begin
             mem_write = 1'bx;
             branch = 1'bx;
             jmp = 1'bx;
-            alu_op = 2'bxx;
+            alu_op = 3'bxxx;
             pc_to_reg = 1'bx;
             pc_src_alu = 1'b0;
         end

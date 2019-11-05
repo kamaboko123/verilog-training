@@ -6,7 +6,7 @@ module INSMEM(
 
 reg [7:0] _data[511:0];
 
-initial $readmemh("test_c/memdata/test.mem", _data);
+initial $readmemh("test_c/memdata/test_for.mem", _data);
 
 always @(negedge reset_n) begin
     if(!reset_n) begin
