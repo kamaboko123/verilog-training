@@ -22,7 +22,7 @@ initial begin
     #1 reset_n <= 0;
     #(CLK * 2) reset_n <= 1;
     
-    #5000 $finish;
+    #100000 $finish;
 end
 
 MIPS mips(

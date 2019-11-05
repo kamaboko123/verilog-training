@@ -8,7 +8,7 @@ module DATAMEM(
     output [31:0] data
 );
 
-reg [7:0] _data[511:0];
+reg [7:0] _data[1023:0];
 wire [31:0] debug;
 assign debug = {_data[8], _data[9], _data[10], _data[11]};
 
