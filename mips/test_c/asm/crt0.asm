@@ -6,5 +6,12 @@ start:
 main:
     addi $sp, $zero, 0xff
     nop
-    j mips_main
+    jal mips_main
+    add $v1, $zero, $v0
+    nop
+    j end
     
+end:
+    nop
+    j end
+    nop

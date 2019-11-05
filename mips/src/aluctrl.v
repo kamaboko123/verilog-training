@@ -17,7 +17,8 @@ parameter ALU_CODE_SLT = 3'b111;
 parameter FUNC_AND = 6'b100100;
 parameter FUNC_OR =  6'b100101;
 parameter FUNC_ADD = 6'b100000;
-//parameter FUNC_ADDU = 6'b100001;
+parameter FUNC_ADDU = 6'b100001; //tmp
+parameter FUNC_JR = 6'b001000; //tmp (for jr inst)
 parameter FUNC_SUB = 6'b100010;
 parameter FUNC_SLT = 6'b101010;
 
@@ -30,7 +31,8 @@ always @* begin
                 FUNC_AND: alu_code = ALU_CODE_AND;
                 FUNC_OR:  alu_code = ALU_CODE_OR;
                 FUNC_ADD: alu_code = ALU_CODE_ADD;
-                //FUNC_ADDU: alu_code = ALU_CODE_ADD;
+                FUNC_ADDU: alu_code = ALU_CODE_ADD; //tmp
+                FUNC_JR: alu_code = ALU_CODE_ADD; //tmp
                 FUNC_SUB: alu_code = ALU_CODE_SUB;
                 FUNC_SLT: alu_code = ALU_CODE_SLT;
                 default : alu_code = 2'bx;

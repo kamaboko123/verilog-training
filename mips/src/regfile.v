@@ -2,10 +2,12 @@ module REGFILE(
     input reset_n,
     input clk,
     input reg_write, //write flg
+    input reg_write_ra,
     input [4:0] r_reg0, //read select
     input [4:0] r_reg1,
     input [4:0] w_reg0, //write select
     input [31:0] w_data, //write data
+    input [31:0] w_ra_data,
     output [31:0] reg0, //selected register data
     output [31:0] reg1
 );
@@ -119,7 +121,10 @@ REGISTER_32 r27(reset_n, clk, _write_sel[27], w_data, _r27_data); //k1
 REGISTER_32 r28(reset_n, clk, _write_sel[28], w_data, _r28_data); //gp
 REGISTER_32 r29(reset_n, clk, _write_sel[29], w_data, _r29_data); //sp
 REGISTER_32 r30(reset_n, clk, _write_sel[30], w_data, _r30_data); //fp
-REGISTER_32 r31(reset_n, clk, _write_sel[31], w_data, _r31_data); //ra
+REGISTER_32 r31(reset_n, clk, (_write_sel[31] | reg_write_ra), _r31_w_data, _r31_data); //ra
+
+wire [31:0] _r31_w_data;
+assign _r31_w_data = (reg_write_ra == 0) ? (w_data) : (w_ra_data);
 
 function [31:0] mux_reg;
     input [4:0] sel;

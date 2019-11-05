@@ -38,12 +38,15 @@ wire mem_write;
 wire mem_to_reg;
 wire branch;
 wire jmp;
+wire pc_to_reg;
+wire pc_src_alu;
 
 //decoder flag(in)
 wire alu_zero;
 
 DECODER dec(
     .ins_op(ins_data[31:26]),
+    .func_code(ins_data[5:0]),
     .reg_write(reg_write),
     .reg_dst(reg_dst),
     .alu_src(alu_src),
@@ -52,7 +55,9 @@ DECODER dec(
     .mem_write(mem_write),
     .mem_to_reg(mem_to_reg),
     .branch(branch),
-    .jmp(jmp)
+    .jmp(jmp),
+    .pc_to_reg(pc_to_reg),
+    .pc_src_alu(pc_src_alu)
 );
 
 DATAMEM datamem(
@@ -90,7 +95,9 @@ REGFILE regfile(
     .w_reg0(reg_write_sel0),
     .w_data(reg_write_data0),
     .reg0(reg_data0),
-    .reg1(reg_data1)
+    .reg1(reg_data1),
+    .w_ra_data(pc_branch_candidate0),
+    .reg_write_ra(pc_to_reg)
 );
 
 ALUCTRL aluctrl(
@@ -111,7 +118,7 @@ REGISTER_32 pc(
     .reset_n(reset_n),
     .clk(clk),
     .write(1'b1),
-    .in_data(pc_next),
+    .in_data((pc_src_alu == 0) ? (pc_next) : (alu_result)),
     .data(pc_data)
 );
 
